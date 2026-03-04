@@ -1,4 +1,5 @@
 #include "PhysicsObject.h"
+#include "PhysicsWorld.h"
 
 namespace pObject
 {
@@ -118,7 +119,7 @@ namespace pObject
 		if (this->active != active) {
 			this->active = active;
 			if (auto world = GetWorld()) {
-				world->MarkDirty(this);   // ±ê¼ÇÎªÔà£¬ÏÂÒ»Ö¡»áÖØÐÂ´¦ÀíËÄ²æÊ÷
+				world->MarkDirty(this);   // ï¿½ï¿½ï¿½Îªï¿½à£¬ï¿½ï¿½Ò»Ö¡ï¿½ï¿½ï¿½ï¿½ï¿½Â´ï¿½ï¿½ï¿½ï¿½Ä²ï¿½ï¿½ï¿½
 			}
 		}
 	}
@@ -155,10 +156,10 @@ namespace pObject
 		{
 			Force* force = it->get();
 			double remainingTime = force->getDurationTime();
-			//the torque ¦Ó = r ¡Á F
+			//the torque ï¿½ï¿½ = r ï¿½ï¿½ F
 			Vector2 r = force->getApplyPoint();
 			double torque = Cross(r, force->getForceVector());
-			//the angularAcceleration ¦Á = ¦Ó / I
+			//the angularAcceleration ï¿½ï¿½ = ï¿½ï¿½ / I
 			double angularAcceleration = torque / momentOfInertia;
 			const bool isInfinite = remainingTime == INFINITY;
 			double actualDeltaT = isInfinite ? delta_t : std::min(remainingTime, delta_t);

@@ -6,9 +6,9 @@ namespace pEngine
     void PhysicsWorld::AddObject(pObject::BaseObject* obj)
     {
         obj->SetWorld(this);
-        allObjects_.push_back(std::move(obj));
+        allObjects_.push_back(obj);
         
-        // ·ÖÀà´æ´¢
+        // ï¿½ï¿½ï¿½ï¿½æ´?
         if (obj->GetType() == pObject::ObjectType::RigidBody) {
             pObject::RigidBody* rb = static_cast<pObject::RigidBody*>(obj);
             rigidBodies_.push_back(rb);
@@ -39,16 +39,16 @@ namespace pEngine
             break;
         }
 
-        // 3. ´ÓÖ÷ÈÝÆ÷ÒÆ³ýËùÓÐÈ¨
+        // 3. ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Æ³ï¿½ï¿½ï¿½ï¿½ï¿½È¨
         auto it = std::find_if(allObjects_.begin(), allObjects_.end(),
-            [obj](const auto& ptr) { return ptr.get() == obj; });
+            [obj](const auto& ptr) { return ptr == obj; });
 
         if (it != allObjects_.end()) {
             pendingRemoval_.push_back(std::move(*it));
             allObjects_.erase(it);
         }
 
-        // 4. ´ÓÔà¶ÔÏó¼¯ºÏÒÆ³ý£¨Èç¹û´æÔÚ£©
+        // 4. ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ó¼?ºï¿½ï¿½Æ³ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ú£ï¿?
         dirtyObjects_.erase(obj);
     }
 
@@ -59,7 +59,7 @@ namespace pEngine
             if(obj->IsActive())
                 obj->Update(deltaTime);
         }
-        // ´¦ÀíÔà¶ÔÏó
+        // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿?
         UpdateDirtyObjects();
         DetectCollisions();
     }
@@ -138,12 +138,12 @@ namespace pEngine
         for (auto obj : dirtyObjects_) {
             if (!obj->IsDirty()) continue;
 
-            // ´ÓËÄ²æÊ÷ÒÆ³ý£¨Èç¹ûÊÇ¸ÕÌå£©
+            // ï¿½ï¿½ï¿½Ä²ï¿½ï¿½ï¿½ï¿½Æ³ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ç¸ï¿½ï¿½å£?
             if (obj->GetType() == pObject::ObjectType::RigidBody) {
                 collisionTree_.Remove(static_cast<pObject::RigidBody*>(obj));
             }
 
-            // ÖØÐÂ²åÈë£¨Èç¹ûÊÇ¸ÕÌåÇÒactive£©
+            // ï¿½ï¿½ï¿½Â²ï¿½ï¿½ë£¨ï¿½ï¿½ï¿½ï¿½Ç¸ï¿½ï¿½ï¿½ï¿½ï¿½activeï¿½ï¿½
             if (obj->IsActive() && obj->GetType() == pObject::ObjectType::RigidBody) {
                 collisionTree_.Insert(static_cast<pObject::RigidBody*>(obj));
             }
