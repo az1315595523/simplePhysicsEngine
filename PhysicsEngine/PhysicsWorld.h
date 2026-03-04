@@ -5,6 +5,7 @@
 #include "QuadTree.h"
 #include <memory>
 #include <unordered_set>
+
 namespace pEngine
 {
 
@@ -29,7 +30,7 @@ namespace pEngine
 
     class PhysicsWorld {
     public:
-        
+
         void AddObject(pObject::BaseObject* obj);
         void RemoveObject(pObject::BaseObject* obj);
         void MarkDirty(pObject::BaseObject* obj);
