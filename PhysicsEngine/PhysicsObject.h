@@ -3,6 +3,12 @@
 #include <vector>
 #include <utility>
 #include <memory>
+#include <algorithm>
+namespace pEngine {
+	class PhysicsWorld;
+}
+
+
 namespace pObject
 {
 #define CACHE_THRESHOLD 1.0
@@ -41,7 +47,12 @@ namespace pObject
 		void RemoveAllForces();
 		void MarkDirty() { isDirty_ = true; }
 		void ClearDirty() { isDirty_ = false; }
+		void SetActive(bool active);
 		bool IsDirty() { return isDirty_; }
+		bool IsActive() {return active;}
+
+		pEngine::PhysicsWorld* GetWorld(){return world;}
+		void SetWorld(pEngine::PhysicsWorld* world){this->world = world;}
 	protected:
 		double mass;
 		bool isGravity;
@@ -50,11 +61,15 @@ namespace pObject
 		//the second para means the duration time
 		std::vector<std::unique_ptr<Force>> forces;
 		bool isDirty_ = false;
+		bool active = false;
+
+		pEngine::PhysicsWorld* world;
+
 	};
 	class RigidBody : public BaseObject
 	{
 	public:
-		RigidBody() : BaseObject() { angle = 0.0; angularVelocity = 0.0; restitution = 0.0; momentOfInertia = 0.0; collider = NULL; }
+		// RigidBody() : BaseObject() { angle = 0.0; angularVelocity = 0.0; restitution = 0.0; momentOfInertia = 0.0; collider = NULL; }
 		~RigidBody() = default;
 		RigidBody(double mass = 0.0, Vector2 velocity = Vector2(), Vector2 position = Vector2(),
 			double angularVelocity = 0.0);

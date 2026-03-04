@@ -1,4 +1,5 @@
 #include "PhysicsEngine.h"
+#include <cfloat>
 namespace pEngine
 {
 	double calSByVT(const Vector2& velocity, double t)

@@ -30,7 +30,7 @@ namespace pEngine
     class PhysicsWorld {
     public:
         
-        void AddObject(std::unique_ptr<pObject::BaseObject> obj);
+        void AddObject(pObject::BaseObject* obj);
         void RemoveObject(pObject::BaseObject* obj);
         void MarkDirty(pObject::BaseObject* obj);
         
@@ -41,13 +41,13 @@ namespace pEngine
 
     private:
         void DetectCollisions();
-        std::vector<std::unique_ptr<pObject::BaseObject>> pendingRemoval_;
+        std::vector<pObject::BaseObject*> pendingRemoval_;
         void ProcessPendingRemovals() {
             if (!pendingRemoval_.empty()) {
                 pendingRemoval_.clear();
             }
         }
-        std::vector<std::unique_ptr<pObject::BaseObject>> allObjects_;
+        std::vector<pObject::BaseObject*> allObjects_;
         std::vector<pObject::RigidBody*> rigidBodies_;
         std::unordered_set<pObject::BaseObject*> dirtyObjects_;
         Quadtree collisionTree_{ 0, AABB{Vector2(-1000,-1000), Vector2(1000,1000)} };

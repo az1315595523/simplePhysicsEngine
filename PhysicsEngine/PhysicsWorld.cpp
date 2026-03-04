@@ -3,19 +3,20 @@
 
 namespace pEngine
 {
-    void PhysicsWorld::AddObject(std::unique_ptr<pObject::BaseObject> obj)
+    void PhysicsWorld::AddObject(pObject::BaseObject* obj)
     {
-        pObject::BaseObject* rawPtr = obj.get();
+        obj->SetWorld(this);
         allObjects_.push_back(std::move(obj));
-
+        
         // 分类存储
-        if (rawPtr->GetType() == pObject::ObjectType::RigidBody) {
-            pObject::RigidBody* rb = static_cast<pObject::RigidBody*>(rawPtr);
+        if (obj->GetType() == pObject::ObjectType::RigidBody) {
+            pObject::RigidBody* rb = static_cast<pObject::RigidBody*>(obj);
             rigidBodies_.push_back(rb);
-            collisionTree_.Insert(rb);
+            if(rb->IsActive())
+                collisionTree_.Insert(rb);
         }
 
-        MarkDirty(rawPtr);
+        MarkDirty(obj);
     }
 
     void PhysicsWorld::RemoveObject(pObject::BaseObject* obj) {
@@ -55,7 +56,8 @@ namespace pEngine
     {
         ProcessPendingRemovals();
         for (auto& obj : allObjects_) {
-            obj->Update(deltaTime);
+            if(obj->IsActive())
+                obj->Update(deltaTime);
         }
         // 处理脏对象
         UpdateDirtyObjects();
@@ -69,10 +71,14 @@ namespace pEngine
             RigidBodyPairEqual> checkedPairs;
 
         for (size_t i = 0; i < rigidBodies_.size(); ++i) {
+
+            if(!rigidBodies_[i]->IsActive()) continue;
+
             std::vector<pObject::RigidBody*> potentials;
             collisionTree_.Query(potentials, rigidBodies_[i]->GetCollider().GetAABB());
 
             for (auto other : potentials) {
+                if(!other->IsActive()) continue;
                 if (rigidBodies_[i] >= other) continue;
 
                 CollisionInfo info = rigidBodies_[i]->GetCollider().CheckCollision(&other->GetCollider());
@@ -121,7 +127,7 @@ namespace pEngine
     std::vector<pObject::BaseObject*> PhysicsWorld::GetObjects() const {
         std::vector<pObject::BaseObject*> result;
         for (auto& obj : allObjects_) {
-            result.push_back(obj.get());
+            result.push_back(obj);
         }
         return result;
     }
@@ -138,7 +144,7 @@ namespace pEngine
             }
 
             // 重新插入（如果是刚体且active）
-            if (obj->GetType() == pObject::ObjectType::RigidBody) {
+            if (obj->IsActive() && obj->GetType() == pObject::ObjectType::RigidBody) {
                 collisionTree_.Insert(static_cast<pObject::RigidBody*>(obj));
             }
 

@@ -1,5 +1,6 @@
 #include "PhysicsObject.h" 
 #include "PhysicsEngine.h"
+#include <cfloat>
 
 namespace pEngine
 {
@@ -72,7 +73,7 @@ namespace pEngine
 	//		//return normal;
 	//		return other->CalculateCollisionNormal(this);
 	//	}
-	//	return Vector2(0, 1); // Ä¬ÈÏ·¨Ïß
+	//	return Vector2(0, 1); // Ä¬ï¿½Ï·ï¿½ï¿½ï¿½
 	//}
 	//
 	
@@ -178,7 +179,7 @@ namespace pEngine
 			double overlap = (aProj + bProj) - distance;
 
 			if (overlap <= 0) {
-				return info; // ·ÖÀëÖá´æÔÚ£¬ÎÞÅö×²
+				return info; // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ú£ï¿½ï¿½ï¿½ï¿½ï¿½×²
 			}
 
 			if (overlap < minOverlap) {

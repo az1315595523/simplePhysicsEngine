@@ -4,8 +4,6 @@ namespace pEngine
 {
 	Vector2::Vector2(double vx, double vy, std::string desc) :vx(vx), vy(vy), desc(desc)
 	{
-		double cos_theta = vx / getMagnitude();
-		this->dir = std::fmod(std::atan2(vy, vx) + 2 * _pi, 2 * _pi);
 	}
 	double Vector2::getMagnitude() const
 	{
@@ -14,7 +12,7 @@ namespace pEngine
 	}
 	double Vector2::getDir() const
 	{
-		return dir;
+		return std::fmod(std::atan2(vy, vx) + 2 * _pi, 2 * _pi);
 	}
 	double Vector2::getVx() const
 	{
@@ -42,9 +40,10 @@ namespace pEngine
 	}
 	double Vector2::getProjection(double projectDir) const
 	{
+		double dir = getDir();
 		if (projectDir == 4)
-			projectDir = this->dir;
-		double angleDiff_rad = (this->dir - projectDir);
+			projectDir = dir;
+		double angleDiff_rad = (dir - projectDir);
 		double projection = getMagnitude() * std::cos(angleDiff_rad);
 		if (std::abs(projection) < 1e-5)
 			return 0.0;

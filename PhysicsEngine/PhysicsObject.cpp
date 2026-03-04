@@ -113,6 +113,15 @@ namespace pObject
 	{
 		forces.clear();
 	}
+	void BaseObject::SetActive(bool active)
+	{
+		if (this->active != active) {
+			this->active = active;
+			if (auto world = GetWorld()) {
+				world->MarkDirty(this);   // 标记为脏，下一帧会重新处理四叉树
+			}
+		}
+	}
 	RigidBody::RigidBody(double mass , Vector2 velocity, Vector2 position, double angularVelocity) 
 		: BaseObject(mass, velocity, position),
 		angularVelocity(angularVelocity),
@@ -120,6 +129,7 @@ namespace pObject
 		restitution(0.8)
 	{
 		momentOfInertia = 0.0;
+		collider = NULL;
 	}
 	void RigidBody::AddCircleCollider(double offset, double radius)
 	{

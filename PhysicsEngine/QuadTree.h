@@ -5,6 +5,7 @@
 #include <memory>
 #include <array>
 #include <vector>
+#include <algorithm>
 
 namespace pEngine {
 

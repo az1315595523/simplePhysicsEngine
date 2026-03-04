@@ -86,8 +86,8 @@ namespace pEngine
 		double CalculateMoment(double mass) const override;
 		AABB GetAABB() const override;
 		double getRadius() const;
-		CollisionInfo CheckCollisionWith(const CircleCollider& other) const;
-		CollisionInfo CheckCollisionWith(const BoxCollider& other) const;
+		CollisionInfo CheckCollisionWith(const CircleCollider& other) const override;
+		CollisionInfo CheckCollisionWith(const BoxCollider& other) const override;
 		//Vector2 CalculateCollisionNormal(const Collider* other) const;
 
 	private:
@@ -101,8 +101,8 @@ namespace pEngine
 		AABB GetAABB() const override;
 		OBB GetOBB() const;
 		double CalculateMoment(double mass) const override;
-		CollisionInfo CheckCollisionWith(const CircleCollider&) const;
-		CollisionInfo CheckCollisionWith(const BoxCollider&) const;
+		CollisionInfo CheckCollisionWith(const CircleCollider&) const override;
+		CollisionInfo CheckCollisionWith(const BoxCollider&) const override;
 
 		Vector2 GetExtents() const;
 

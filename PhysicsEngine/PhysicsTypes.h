@@ -23,7 +23,6 @@ namespace pEngine
 		double vx;
 		double vy;
 		//dir means the radAngle,which is between 0 and 2¦Ð
-		double dir;
 		std::string desc;
 	};
 	Vector2 operator+(const Vector2& v1, const Vector2& v2);
