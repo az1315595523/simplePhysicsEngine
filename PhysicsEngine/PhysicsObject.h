@@ -91,7 +91,7 @@ namespace pObject
 		double getAngularVelocity() { return angularVelocity; }
 		double getRestitution() { return restitution; }
 		double getMomentOfInertia() { return momentOfInertia; }
-		void setAngle(double angle) { this->angle = angle ; angle = fmod(angle, 2 * _pi); MarkDirty(); }
+		void setAngle(double angle) { angle = fmod(angle, 2 * _pi); if (angle < 0) angle += 2 * _pi;this->angle = angle ; MarkDirty(); }
 		void setAngularVelocity(double angularVelocity) { this->angularVelocity = angularVelocity; MarkDirty(); }
 		void setRestitution(double restitution) { this->restitution = restitution; }
 
